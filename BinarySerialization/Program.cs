@@ -18,7 +18,7 @@ namespace BinarySerialization
         {
             var department = new Department
             {
-                DepartmentName = "Power Generation",
+                DepartmentName = "Power Generation Binary",
                 Employees = new List<Employee>()
                 {
                     new() { EmployeeName = "John" },
@@ -52,7 +52,7 @@ namespace BinarySerialization
 
         static void Deserialize()
         {
-            Department department = null;
+            Department department;
 
             FileStream fs = new FileStream("DepartmentBinary.dat", FileMode.Open);
             try
