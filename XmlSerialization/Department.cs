@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-namespace BinarySerialization
+namespace XmlSerialization
 {
+    [Serializable]
     public class Department
     {
         public string DepartmentName { get; set; }
