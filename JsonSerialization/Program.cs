@@ -33,7 +33,7 @@ namespace JsonSerialization
 
             var path = Environment.CurrentDirectory + "//DepartmentJson.json";
 
-            string departmentJson = JsonSerializer.Serialize(department);
+            var departmentJson = JsonSerializer.Serialize(department);
 
             File.WriteAllText(path, departmentJson);
         }
