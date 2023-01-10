@@ -1,20 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Xml.Serialization;
 
 namespace XmlSerialization
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            Serialize();
-            Deserialize();
-        }
-
-        static void Serialize()
-        {
+            var path = Environment.CurrentDirectory + "//DepartmentXml.xml";
             var department = new Department
             {
                 DepartmentName = "Power Generation Xml",
@@ -31,27 +24,11 @@ namespace XmlSerialization
                 }
             };
 
-            var writer = new XmlSerializer(typeof(Department));
+            XmlSerializationHelper.Serialize(path, department);
+            var newDepartment = XmlSerializationHelper.Deserialize<Department>(path);
 
-            var path = Environment.CurrentDirectory + "//DepartmentXml.xml";
-            var file = File.Create(path);
-
-            writer.Serialize(file, department);
-            file.Close();
-        }
-
-        static void Deserialize()
-        {
-            var reader = new XmlSerializer(typeof(Department));
-            var file = new StreamReader(Environment.CurrentDirectory + "//DepartmentXml.xml");
-
-            var department = (Department)reader.Deserialize(file);
-
-            file.Close();
-
-            Console.WriteLine($"Department name: {department.DepartmentName}");
-
-            foreach (var employee in department.Employees)
+            Console.WriteLine($"Department name: {newDepartment.DepartmentName}");
+            foreach (var employee in newDepartment.Employees)
             {
                 Console.WriteLine($"Employee name: {employee.EmployeeName}");
             }

@@ -1,21 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace BinarySerialization
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            Serialize();
-            Deserialize();
-        }
-
-        static void Serialize()
-        {
+            var path = "DepartmentBinary.dat";
             var department = new Department
             {
                 DepartmentName = "Power Generation Binary",
@@ -32,48 +24,12 @@ namespace BinarySerialization
                 }
             };
 
-            var fs = new FileStream("DepartmentBinary.dat", FileMode.Create);
-            var formatter = new BinaryFormatter();
+            BinarySerializationHelper.Serialize(path, department);
 
-            try
-            {
-                formatter.Serialize(fs, department);
-            }
-            catch (SerializationException e)
-            {
-                Console.WriteLine("Failed to serialize. Reason: " + e.Message);
-                throw;
-            }
-            finally
-            {
-                fs.Close();
-            }
-        }
+            var newDepartment = BinarySerializationHelper.Deserialize<Department>(path);
 
-        static void Deserialize()
-        {
-            Department department;
-
-            FileStream fs = new FileStream("DepartmentBinary.dat", FileMode.Open);
-            try
-            {
-                BinaryFormatter formatter = new BinaryFormatter();
-
-                department = (Department)formatter.Deserialize(fs);
-            }
-            catch (SerializationException e)
-            {
-                Console.WriteLine("Failed to deserialize. Reason: " + e.Message);
-                throw;
-            }
-            finally
-            {
-                fs.Close();
-            }
-
-            Console.WriteLine($"Department name: {department.DepartmentName}");
-
-            foreach (var employee in department.Employees)
+            Console.WriteLine($"Department name: {newDepartment.DepartmentName}");
+            foreach (var employee in newDepartment.Employees)
             {
                 Console.WriteLine($"Employee name: {employee.EmployeeName}");
             }

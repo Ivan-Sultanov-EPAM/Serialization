@@ -1,20 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
 
 namespace JsonSerialization
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            Serialize();
-            Deserialize();
-        }
+            var path = Environment.CurrentDirectory + "//DepartmentJson.json";
 
-        static void Serialize()
-        {
             var department = new Department
             {
                 DepartmentName = "Power Generation Json",
@@ -31,22 +25,12 @@ namespace JsonSerialization
                 }
             };
 
-            var path = Environment.CurrentDirectory + "//DepartmentJson.json";
+            JsonSerializationHelper.Serialize(path, department);
 
-            var departmentJson = JsonSerializer.Serialize(department);
+            var newDepartment = JsonSerializationHelper.Deserialize<Department>(path);
 
-            File.WriteAllText(path, departmentJson);
-        }
-
-        static void Deserialize()
-        {
-            var file = File.ReadAllBytes(Environment.CurrentDirectory + "//DepartmentJson.json");
-
-            var department = JsonSerializer.Deserialize<Department>(file);
-
-            Console.WriteLine($"Department name: {department.DepartmentName}");
-
-            foreach (var employee in department.Employees)
+            Console.WriteLine($"Department name: {newDepartment.DepartmentName}");
+            foreach (var employee in newDepartment.Employees)
             {
                 Console.WriteLine($"Employee name: {employee.EmployeeName}");
             }
